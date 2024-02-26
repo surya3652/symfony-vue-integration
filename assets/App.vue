@@ -1,9 +1,11 @@
-
 <template>
   <div class="hello">
-    <h1>Welcome to Your Vue.js App</h1>
+    <h1>Welcome! I am from Vue.js</h1>
     <button class="btn btn-primary">Get</button>
-    <button class="btn btn-danger">Post</button>
+    <button @click="handleGet()" class="btn btn-danger">Post</button>
+    <br />
+    <input v-if="show" v-model="id" type="number" placeholder="enter the id" />
+    <button v-if="show" class="btn btn-success" @click="handlePost()">Submit</button>
   </div>
 </template>
 
@@ -12,11 +14,30 @@ console.log("Welcome to your Vue.js App");
 export default {
   name: "Dashboard",
   props: {},
+  data() {
+    return {
+      show: false,
+      id: 0,
+      name: ""
+    };
+  },
+  methods: {
+    handlePost() {
+      
+    },
+    handleGet() {
+      this.show = true;
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+body {
+  background-color: #42b983;
+  text-align: center;
+}
 h3 {
   margin: 40px 0 0;
 }
@@ -35,4 +56,3 @@ a {
   color: #42b983;
 }
 </style>
-
