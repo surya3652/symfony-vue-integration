@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Component! {% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>Hello {{ user_name }}</h1>
+    <h2>Welcome! I am from Symfony.</h2>
+    <p>You have still {{topics|length }} topics to learn!!</p>
+   {% for x in topics %} <p>{{x}}</p>{% endfor %}
+    <div id="app"></div>
+{% endblock %}
+
+
+        
+    
