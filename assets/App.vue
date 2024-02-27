@@ -1,15 +1,35 @@
 <template>
   <div class="hello">
     <h1>Welcome! I am from Vue.js</h1>
-    <button class="btn btn-primary">Get</button>
-    <button @click="handleGet()" class="btn btn-danger">Post</button>
+    <button @click="handleGet()" class="btn btn-primary">Get</button>
+    <button class="btn btn-danger">Post</button>
     <br />
-    <input v-if="show" v-model="id" type="number" placeholder="enter the id" />
-    <button v-if="show" class="btn btn-success" @click="handlePost()">Submit</button>
+    <!-- <input v-if="show" v-model="id" type="number" placeholder="enter the id" />
+    <button v-if="show" class="btn btn-success" @click="handlePost()">
+      Submit
+    </button> -->
+    <table v-if="show" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Designation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="employee in employees" :key="employee.emp_id">
+          <td>{{ employee.emp_id }}</td>
+          <td>{{ employee.emp_name }}</td>
+          <td>{{ employee.emp_designation }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 console.log("Welcome to your Vue.js App");
 export default {
   name: "Dashboard",
@@ -17,16 +37,22 @@ export default {
   data() {
     return {
       show: false,
-      id: 0,
-      name: ""
+      employees: [],
     };
   },
   methods: {
-    handlePost() {
-      
-    },
-    handleGet() {
+    handlePost() {},
+    async handleGet() {
       this.show = true;
+      await axios
+        .get("http://127.0.0.1:8000/api/emp")
+        .then((res) => {
+          console.log(res.data);
+          this.employees = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
