@@ -8,22 +8,30 @@
     <button v-if="show" class="btn btn-success" @click="handlePost()">
       Submit
     </button> -->
-    <table v-if="show" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="employee in employees" :key="employee.emp_id">
-          <td>{{ employee.emp_id }}</td>
-          <td>{{ employee.emp_name }}</td>
-          <td>{{ employee.emp_designation }}</td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-header">Employee Details</div>
+        <div class="card-body">
+          <table v-if="show" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Designation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="employee in employees" :key="employee.emp_id">
+                <td>{{ employee.emp_id }}</td>
+                <td>{{ employee.emp_name }}</td>
+                <td>{{ employee.emp_designation }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
