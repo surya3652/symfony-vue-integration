@@ -23,14 +23,13 @@ class ApiController extends AbstractController{
             ->getRepository(Employee::class)
             ->findAll();
  
-        $data = [];
 
         foreach ($employees as $e) {
-           $data[] = [
+           $data[] = array(
                'emp_id' => $e->getEmpId(),
                'emp_name' => $e->getEmpName(),
                'emp_designation' => $e->getEmpDesignation(),
-           ];
+           );
         }
         return $this->json($data);
     }
@@ -41,16 +40,21 @@ class ApiController extends AbstractController{
 
     public function post_emp(Request $request): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $id = $request->request->get('emp_id');
-        if($this->$entityManager->getRepository(Employee::class)->find($id)){
-            return $this->json('The employee with this id ' . $id . ' is already found');
+        $parameters = json_decode($request->getContent(),true);
+
+        $incoming_id = $parameters['emp_id'];
+        $current = $this->getDoctrine()->getRepository(Employee::class)->find($incoming_id);
+        
+        if ($current) {
+            return $this->json('The user with given ID ' . $incoming_id . ' is already exists' );
         }
+
         $employees = new Employee();
-        $employees->setEmpId($request->request->get('emp_id')); 
-        $employees->setEmpName($request->request->get('emp_name'));
-        $employees->setEmpDesignation($request->request->get('emp_designation'));
- 
+        $employees->setEmpId($parameters['emp_id']); 
+        $employees->setEmpName($parameters['emp_name']);
+        $employees->setEmpDesignation($parameters['emp_designation']);
+        
+        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($employees);
         $entityManager->flush();
  
@@ -58,7 +62,7 @@ class ApiController extends AbstractController{
     }
 
     /**
-     * @Route("/emp/{id}", name="employee_existing", methods={"GET"})
+    * @Route("/emp/{id}", name="employee_existing", methods={"GET"})
     */
 
     public function get_emp_with_id(int $id): Response
@@ -86,11 +90,12 @@ class ApiController extends AbstractController{
         $employees = $entityManager->getRepository(Employee::class)->find($id);
  
         if (!$employees) {
-            return $this->json('No project found for id' . $id, 404);
+            return $this->json('No Employee found for id ' . $id);
         }
  
-        $employees->setEmpName($request->request->get('emp_name'));
-        $employees->setEmpDesignation($request->request->get('emp_designation'));
+        $parameters = json_decode($request->getContent(), true);
+        $employees->setEmpName($parameters['emp_name']);
+        $employees->setEmpDesignation($parameters['emp_designation']);
         $entityManager->flush();
  
         $data =  [
@@ -111,13 +116,13 @@ class ApiController extends AbstractController{
         $employees = $entityManager->getRepository(Employee::class)->find($id);
  
         if (!$employees) {
-            return $this->json('No employee found for id ' . $id, 404);
+            return $this->json('No employee found for id ' . $id);
         }
  
         $entityManager->remove($employees);
         $entityManager->flush();
  
-        return $this->json('Deleted a project successfully with id ' . $id);
+        return $this->json('Deleted Employee successfully with id ' . $id);
     }
  
 }
